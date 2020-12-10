@@ -24,16 +24,26 @@ namespace s452631_webApp.Controllers
             return View(displayUser);
         }
 
+        // GET: User/Create
         public ActionResult Create()
         {
+            ViewBag.Message = "Add user";
+
             return View();
         }
 
+        // POST: User/Create
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(users newUser)
         {
-            dataClass.users.InsertOnSubmit(newUser);
-            dataClass.SubmitChanges();
+            if (ModelState.IsValid)
+            {
+                dataClass.users.InsertOnSubmit(newUser);
+                dataClass.SubmitChanges();
+                return RedirectToAction("Index");
+            }
+                
             return View();
         }
 
